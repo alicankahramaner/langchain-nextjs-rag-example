@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     const langchainMessages = await toBaseMessages(messages);
 
-    const stream = await agent.stream({ messages: langchainMessages }, {
+    const stream = await agent.stream({ messages: langchainMessages },{
         streamMode: ["values", 'messages', 'updates'],
         configurable: {
             thread_id: id
@@ -18,9 +18,8 @@ export async function POST(req: NextRequest) {
     });
 
     return createUIMessageStreamResponse({
-        stream: toUIMessageStream(stream),
+        stream: toUIMessageStream(stream)
     });
-
 }
 
 export async function PUT(req: NextRequest) {
@@ -34,8 +33,8 @@ export async function PUT(req: NextRequest) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
     try {
-
         const loader = new PDFLoader(new Blob([buffer]))
+
         const loadedDocument = await loader.load()
 
         vectorStore.addDocuments(loadedDocument)
